@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import * as z from "zod";
-import { useState } from "react";
-import axios from "axios";
+import * as z from 'zod';
+import { useState } from 'react';
+import axios from 'axios';
 
-import { Button } from "@/components/ui/button";
-import { Heading } from "@/components/ui/heading";
-import { Separator } from "@/components/ui/separator";
-import { Category, Image, Product } from "@prisma/client";
-import { Trash } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from '@/components/ui/button';
+import { Heading } from '@/components/ui/heading';
+import { Separator } from '@/components/ui/separator';
+import { Category, Image, Product } from '@prisma/client';
+import { Trash } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Form,
   FormControl,
@@ -19,21 +19,21 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import toast from "react-hot-toast";
-import { useParams, useRouter } from "next/navigation";
-import { AlertModal } from "@/components/modals/alert-modal";
-import { useOrigin } from "@/hooks/use-origin";
-import ImageUpload from "@/components/ui/image-upload";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import toast from 'react-hot-toast';
+import { useParams, useRouter } from 'next/navigation';
+import { AlertModal } from '@/components/modals/alert-modal';
+import { useOrigin } from '@/hooks/use-origin';
+import ImageUpload from '@/components/ui/image-upload';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
+} from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
 
 interface ProductFormProps {
   initialData:
@@ -66,12 +66,12 @@ export const ProductForm: React.FC<ProductFormProps> = ({
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const title = initialData ? "Edit Product" : "Tambah Product";
-  const description = initialData ? "Edit Product Toko" : "Tambah Product Toko";
+  const title = initialData ? 'Edit Product' : 'Buat Product';
+  const description = initialData ? 'Edit Product Toko' : 'Buat Product Toko';
   const toastMessage = initialData
-    ? "Product telah berhasil di-edit"
-    : "Product telah berhasil ditambahkan";
-  const action = initialData ? "Simpan Product" : "Tambah Product";
+    ? 'Product berhasil di edit'
+    : 'Product berhasil dibuat';
+  const action = initialData ? 'Simpan Product' : 'Buat Product';
 
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(formSchema),
@@ -81,10 +81,10 @@ export const ProductForm: React.FC<ProductFormProps> = ({
           price: parseFloat(String(initialData?.price)),
         }
       : {
-          name: "",
+          name: '',
           images: [],
           price: 0,
-          categoryId: "",
+          categoryId: '',
           isFeatured: false,
           isArchived: false,
         },
@@ -105,7 +105,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
       router.push(`/${params.storeId}/products`);
       toast.success(toastMessage);
     } catch (error) {
-      toast.error("Cek kembali data yang kamu input");
+      toast.error('Cek kembali data yang diinput');
     } finally {
       setLoading(false);
     }
@@ -117,9 +117,9 @@ export const ProductForm: React.FC<ProductFormProps> = ({
       await axios.delete(`/api/${params.storeId}/products/${params.productId}`);
       router.refresh();
       router.push(`/${params.storeId}/products`);
-      toast.success("Produk sudah berhasil dihapus");
+      toast.success('Produk berhasil dihapus');
     } catch (error) {
-      toast.error("Cek kembali data dan koneksi internet kamu");
+      toast.error('Cek kembali data dan koneksi mu');
     } finally {
       setLoading(false);
       setOpen(false);
@@ -200,7 +200,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
               name="price"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Price</FormLabel>
+                  <FormLabel>Harga</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="Rp"
@@ -213,13 +213,12 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
               name="categoryId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Category</FormLabel>
+                  <FormLabel>Kategori</FormLabel>
                   <FormControl>
                     <Select
                       disabled={loading}
@@ -248,7 +247,6 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
               name="isFeatured"
@@ -263,13 +261,12 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                   <div className="space-y-1 leading-none">
                     <FormLabel>Featured</FormLabel>
                     <FormDescription>
-                      Produk "Featured" akan muncul di halaman Homepage
+                      Produk ini akan muncul di Home Page
                     </FormDescription>
                   </div>
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
               name="isArchived"
@@ -284,7 +281,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                   <div className="space-y-1 leading-none">
                     <FormLabel>Archived</FormLabel>
                     <FormDescription>
-                      Produk "Archived" akan diarsipkan dari Toko
+                      Produk ini akan disembunyikan dari toko
                     </FormDescription>
                   </div>
                 </FormItem>

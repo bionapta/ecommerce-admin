@@ -1,6 +1,6 @@
-import db from "@/lib/db";
-import { auth } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
+import db from '@/lib/db';
+import { auth } from '@clerk/nextjs/server';
+import { NextResponse } from 'next/server';
 
 export async function GET(
   req: Request,
@@ -8,7 +8,7 @@ export async function GET(
 ) {
   try {
     if (!params.bannerId) {
-      return new NextResponse("Banner ID dibutuhkan", { status: 400 });
+      return new NextResponse('Banner id dibutuhkan', { status: 400 });
     }
 
     const banner = await db.banner.findUnique({
@@ -19,8 +19,8 @@ export async function GET(
 
     return NextResponse.json(banner);
   } catch (error) {
-    console.log("[BANNER_GET]", error);
-    return new NextResponse("Internal error", { status: 500 });
+    console.log('[BANNER_GET]', error);
+    return new NextResponse('Internal error', { status: 500 });
   }
 }
 
@@ -35,16 +35,18 @@ export async function PATCH(
     const { label, imageUrl } = body;
 
     if (!userId) {
-      return new NextResponse("Unauthenticated", { status: 401 });
+      return new NextResponse('Unauthenticated', { status: 401 });
     }
     if (!label) {
-      return new NextResponse("Harus menginput label", { status: 400 });
+      return new NextResponse('Harus menginput label', { status: 400 });
     }
+
     if (!imageUrl) {
-      return new NextResponse("Harus menginput imageUrl", { status: 400 });
+      return new NextResponse('Harus menginput imageUrl', { status: 400 });
     }
+
     if (!params.bannerId) {
-      return new NextResponse("Banner ID dibutuhkan", { status: 400 });
+      return new NextResponse('Banner id dibutuhkan', { status: 400 });
     }
 
     const storeByUserId = await db.store.findFirst({
@@ -55,7 +57,7 @@ export async function PATCH(
     });
 
     if (!storeByUserId) {
-      return new NextResponse("Unauthorized", { status: 403 });
+      return new NextResponse('Unauthorized', { status: 403 });
     }
 
     const banner = await db.banner.updateMany({
@@ -70,8 +72,8 @@ export async function PATCH(
 
     return NextResponse.json(banner);
   } catch (error) {
-    console.log("[BANNER_PATCH]", error);
-    return new NextResponse("Internal error", { status: 500 });
+    console.log('[BANNER_PATCH]', error);
+    return new NextResponse('Internal error', { status: 500 });
   }
 }
 
@@ -83,11 +85,11 @@ export async function DELETE(
     const { userId } = await auth();
 
     if (!userId) {
-      return new NextResponse("Unauthenticated", { status: 401 });
+      return new NextResponse('Unauthenticated', { status: 401 });
     }
 
     if (!params.bannerId) {
-      return new NextResponse("Banner ID dibutuhkan", { status: 400 });
+      return new NextResponse('Banner id dibutuhkan', { status: 400 });
     }
 
     const storeByUserId = await db.store.findFirst({
@@ -98,7 +100,21 @@ export async function DELETE(
     });
 
     if (!storeByUserId) {
-      return new NextResponse("Unauthorized", { status: 403 });
+      return new NextResponse('Unauthorized', { status: 403 });
+    }
+
+    // Check for associated categories
+    const associatedCategories = await db.category.findMany({
+      where: {
+        bannerId: params.bannerId,
+      },
+    });
+
+    if (associatedCategories.length > 0) {
+      return new NextResponse(
+        'Cannot delete banner with associated categories',
+        { status: 400 }
+      );
     }
 
     const banner = await db.banner.deleteMany({
@@ -109,7 +125,7 @@ export async function DELETE(
 
     return NextResponse.json(banner);
   } catch (error) {
-    console.log("[BANNER_DELETE]", error);
-    return new NextResponse("Internal error", { status: 500 });
+    console.log('[BANNER_DELETE]', error);
+    return new NextResponse('Internal error', { status: 500 });
   }
 }

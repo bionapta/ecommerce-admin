@@ -1,6 +1,7 @@
-"use client";
+'use client'
 
 import toast from "react-hot-toast";
+
 import { Copy, Server } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "./alert";
 import { Badge, BadgeProps } from "./badge";
@@ -29,7 +30,7 @@ export const ApiAlert: React.FC<ApiAlertProps> = ({
 }) => {
   const onCopy = () => {
     navigator.clipboard.writeText(description);
-    toast.success("API telah berhasil di-copy");
+    toast.success("API berhasil di copy");
   };
 
   return (

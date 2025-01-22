@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 import db from "@/lib/db";
 
@@ -7,7 +7,7 @@ export async function POST(
   { params }: { params: { storeId: string } }
 ) {
   try {
-    const { userId } = await auth();
+    const { userId } = auth();
     const body = await req.json();
 
     const { name, bannerId } = body;

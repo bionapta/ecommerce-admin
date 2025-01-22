@@ -1,6 +1,6 @@
-import db from "@/lib/db";
-import { auth } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
+import { auth } from '@clerk/nextjs/server';
+import { NextResponse } from 'next/server';
+import db from '@/lib/db';
 
 export async function POST(
   req: Request,
@@ -13,30 +13,30 @@ export async function POST(
     const { label, imageUrl } = body;
 
     if (!userId) {
-      return new NextResponse("Unauthorized", { status: 401 });
+      return new NextResponse('Unauthorized', { status: 401 });
     }
 
     if (!label) {
-      return new NextResponse("Input Nama Banner", { status: 400 });
+      return new NextResponse('Nama banner perlu diinput', { status: 400 });
     }
 
     if (!imageUrl) {
-      return new NextResponse("Input Gambar Banner", { status: 400 });
+      return new NextResponse('Image banner perlu diinput', { status: 400 });
     }
 
     if (!params.storeId) {
-      return new NextResponse("Store ID URL dibutuhkan");
+      return new NextResponse('Store id URL dibutuhkan');
     }
 
     const storeByUserId = await db.store.findFirst({
       where: {
         id: params.storeId,
-        userId: userId,
+        userId,
       },
     });
 
     if (!storeByUserId) {
-      return new NextResponse("Unauthorized", { status: 403 });
+      return new NextResponse('Unauthorized', { status: 403 });
     }
 
     const banner = await db.banner.create({
@@ -49,8 +49,8 @@ export async function POST(
 
     return NextResponse.json(banner);
   } catch (error) {
-    console.error("[[BANNERS_POST]", error);
-    return new NextResponse("Internal error", { status: 500 });
+    console.log('[BANNERS_POST]', error);
+    return new NextResponse('Internal error', { status: 500 });
   }
 }
 
@@ -60,7 +60,7 @@ export async function GET(
 ) {
   try {
     if (!params.storeId) {
-      return new NextResponse("Store ID URL dibutuhkan");
+      return new NextResponse('Store id URL dibutuhkan');
     }
 
     const banner = await db.banner.findMany({
@@ -71,7 +71,7 @@ export async function GET(
 
     return NextResponse.json(banner);
   } catch (error) {
-    console.error("[BANNERS_GET]", error);
-    return new NextResponse("Internal error", { status: 500 });
+    console.log('[BANNERS_GET]', error);
+    return new NextResponse('Internal error', { status: 500 });
   }
 }

@@ -1,11 +1,9 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import { UserButton } from "@clerk/nextjs";
-import Modal from "@/components/ui/modal";
-import { useStoreModal } from "@/hooks/use-store-modal";
 import { useEffect } from "react";
+
+import { useStoreModal } from "@/hooks/use-store-modal";
+
 
 const SetupPage = () => {
   const onOpen = useStoreModal((state) => state.onOpen);

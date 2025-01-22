@@ -11,20 +11,19 @@ import { DataTable } from "@/components/ui/data-table";
 import { ApiList } from "@/components/ui/api-list";
 
 interface BannerClientProps {
-  data: BannerColumn[];
+  data: BannerColumn[]
 }
 
-export const BannerClient: React.FC<BannerClientProps> = ({ data }) => {
+export const BannerClient: React.FC<BannerClientProps> = ({
+  data
+}) => {
   const router = useRouter();
   const params = useParams();
 
   return (
     <>
       <div className="flex items-center justify-between">
-        <Heading
-          title={`Banner (${data.length})`}
-          description="Atur Banner untuk Toko"
-        />
+        <Heading title={`Banner (${data.length})`} description="Atur Banner Untuk Toko" />
         <Button onClick={() => router.push(`/${params.storeId}/banners/new`)}>
           <Plus className="mr-2 h-4 w-4" />
           Add New
@@ -32,7 +31,10 @@ export const BannerClient: React.FC<BannerClientProps> = ({ data }) => {
       </div>
       <Separator />
       <DataTable data={data} columns={columns} searchKey="label" />
-      <Heading title="API" description="API untuk Banners Toko" />
+      <Heading 
+      title="API"
+      description="API untuk Banners"
+      />
       <Separator />
       <ApiList namaIndikator="banners" idIndikator="bannerId" />
     </>

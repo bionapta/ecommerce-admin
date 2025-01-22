@@ -45,12 +45,12 @@ export const BannerForm: React.FC<BannerFormProps> = ({ initialData }) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const title = initialData ? "Edit Banner" : "Tambah Banner";
-  const description = initialData ? "Edit Banner Toko" : "Tambah Banner Toko";
+  const title = initialData ? "Edit Banner" : "Buat Banner";
+  const description = initialData ? "Edit Banner Toko" : "Buat Banner Toko";
   const toastMessage = initialData
-    ? "Banner telah berhasil di-edit"
-    : "Banner telah berhasil ditambahkan";
-  const action = initialData ? "Simpan Banner" : "Tambah Banner";
+    ? "Banner berhasil di edit"
+    : "Banner berhasil dibuat";
+  const action = initialData ? "Simpan Banner" : "Buat Banner";
 
   const form = useForm<BannerFormValues>({
     resolver: zodResolver(formSchema),
@@ -75,7 +75,7 @@ export const BannerForm: React.FC<BannerFormProps> = ({ initialData }) => {
       router.push(`/${params.storeId}/banners`);
       toast.success(toastMessage);
     } catch (error) {
-      toast.error("Cek kembali data yang kamu input");
+      toast.error("Cek kembali data yang diinput");
     } finally {
       setLoading(false);
     }
@@ -87,9 +87,9 @@ export const BannerForm: React.FC<BannerFormProps> = ({ initialData }) => {
       await axios.delete(`/api/${params.storeId}/banners/${params.bannerId}`);
       router.refresh();
       router.push(`/${params.storeId}/banners`);
-      toast.success("Banner sudah berhasil dihapus");
+      toast.success("Banner berhasil dihapus");
     } catch (error) {
-      toast.error("Cek kembali data dan koneksi internet kamu");
+      toast.error("Cek kembali data dan koneksi mu");
     } finally {
       setLoading(false);
       setOpen(false);

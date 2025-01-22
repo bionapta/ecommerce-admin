@@ -8,7 +8,7 @@ export async function GET(
 ) {
   try {
     if (!params.categoryId) {
-      return new NextResponse('Category ID dibutuhkan', { status: 400 });
+      return new NextResponse('Category id dibutuhkan', { status: 400 });
     }
 
     const category = await db.category.findUnique({
@@ -49,7 +49,7 @@ export async function PATCH(
     }
 
     if (!params.categoryId) {
-      return new NextResponse('Category ID dibutuhkan', { status: 400 });
+      return new NextResponse('Category id dibutuhkan', { status: 400 });
     }
 
     const storeByUserId = await db.store.findFirst({
@@ -92,7 +92,7 @@ export async function DELETE(
     }
 
     if (!params.categoryId) {
-      return new NextResponse('Category ID dibutuhkan', { status: 400 });
+      return new NextResponse('Category id dibutuhkan', { status: 400 });
     }
 
     const storeByUserId = await db.store.findFirst({

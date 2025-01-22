@@ -2,27 +2,31 @@ import db from "@/lib/db";
 import { CategoryClient } from "./components/client";
 import { CategoryColumn } from "./components/columns";
 
-import { format } from "date-fns";
+import { format } from 'date-fns'
 
-const CategoryPage = async ({ params }: { params: { storeId: string } }) => {
+const CategoriesPage = async ({
+  params
+}: {
+  params: { storeId: string}
+}) => {
   const categories = await db.category.findMany({
     where: {
-      storeId: params.storeId,
+      storeId: params.storeId
     },
     include: {
       banner: true,
     },
     orderBy: {
-      createdAt: "desc",
-    },
-  });
+      createdAt: 'desc'
+    }
+  })
 
-  const formattedCategories: CategoryColumn[] = categories.map((item) => ({
+  const formattedCategories:CategoryColumn[] = categories.map((item) => ({
     id: item.id,
     name: item.name,
     bannerLabel: item.banner.label,
-    createdAt: format(item.createdAt, "MMM do, yyyy"),
-  }));
+    createdAt: format(item.createdAt, "MMM do, yyyy")
+  }))
 
   return (
     <div className="flex-col">
@@ -33,4 +37,4 @@ const CategoryPage = async ({ params }: { params: { storeId: string } }) => {
   );
 };
 
-export default CategoryPage;
+export default CategoriesPage;

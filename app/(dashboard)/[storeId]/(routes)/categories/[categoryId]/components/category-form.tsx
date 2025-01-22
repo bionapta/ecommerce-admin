@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import * as z from "zod";
-import { useState } from "react";
-import axios from "axios";
+import * as z from 'zod';
+import { useState } from 'react';
+import axios from 'axios';
 
-import { Button } from "@/components/ui/button";
-import { Heading } from "@/components/ui/heading";
-import { Separator } from "@/components/ui/separator";
-import { Banner, Category } from "@prisma/client";
-import { Trash } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from '@/components/ui/button';
+import { Heading } from '@/components/ui/heading';
+import { Separator } from '@/components/ui/separator';
+import { Banner, Category } from '@prisma/client';
+import { Trash } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Form,
   FormControl,
@@ -18,18 +18,19 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import toast from "react-hot-toast";
-import { useParams, useRouter } from "next/navigation";
-import { AlertModal } from "@/components/modals/alert-modal";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import toast from 'react-hot-toast';
+import { useParams, useRouter } from 'next/navigation';
+import { AlertModal } from '@/components/modals/alert-modal';
+import { useOrigin } from '@/hooks/use-origin';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
 
 interface CategoryFormProps {
   initialData: Category | null;
@@ -49,24 +50,23 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
 }) => {
   const params = useParams();
   const router = useRouter();
+  const origin = useOrigin();
 
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const title = initialData ? "Edit Kategori" : "Tambah Kategori";
-  const description = initialData
-    ? "Edit Kategori Toko"
-    : "Tambah Kategori Toko";
+  const title = initialData ? 'Edit Category' : 'Buat Category';
+  const description = initialData ? 'Edit Category Toko' : 'Buat Category Toko';
   const toastMessage = initialData
-    ? "Kategori telah berhasil di-edit"
-    : "Kategori telah berhasil ditambahkan";
-  const action = initialData ? "Simpan Kategori" : "Tambah Kategori";
+    ? 'Category berhasil di edit'
+    : 'Category berhasil dibuat';
+  const action = initialData ? 'Simpan Category' : 'Buat Category';
 
   const form = useForm<CategoryFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
-      name: "",
-      bannerId: "",
+      name: '',
+      bannerId: '',
     },
   });
 
@@ -85,7 +85,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
       router.push(`/${params.storeId}/categories`);
       toast.success(toastMessage);
     } catch (error) {
-      toast.error("Cek kembali data yang diinput");
+      toast.error('Cek kembali data yang diinput');
     } finally {
       setLoading(false);
     }
@@ -99,9 +99,9 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
       );
       router.refresh();
       router.push(`/${params.storeId}/categories`);
-      toast.success("Kategori berhasil dihapus");
+      toast.success('Category berhasil dihapus');
     } catch (error) {
-      toast.error("Cek kembali data dan koneksi kamu");
+      toast.error('Cek kembali data dan koneksi mu');
     } finally {
       setLoading(false);
       setOpen(false);
@@ -144,7 +144,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
                   <FormLabel>Nama</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Nama Kategori"
+                      placeholder="Nama Category"
                       disabled={loading}
                       {...field}
                     />

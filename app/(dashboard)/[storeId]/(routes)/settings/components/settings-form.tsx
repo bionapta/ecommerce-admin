@@ -1,15 +1,16 @@
-"use client";
+'use client';
 
-import * as z from "zod";
-import { useState } from "react";
+import * as z from 'zod';
+import { useState } from 'react';
+import axios from 'axios';
 
-import { Button } from "@/components/ui/button";
-import { Heading } from "@/components/ui/heading";
-import { Separator } from "@/components/ui/separator";
-import { Store } from "@prisma/client";
-import { Trash } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from '@/components/ui/button';
+import { Heading } from '@/components/ui/heading';
+import { Separator } from '@/components/ui/separator';
+import { Store } from '@prisma/client';
+import { Trash } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Form,
   FormControl,
@@ -17,13 +18,13 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import toast from "react-hot-toast";
-import axios from "axios";
-import { useParams, useRouter } from "next/navigation";
-import { AlertModal } from "@/components/modals/alert-modal";
-import { ApiAlert } from "@/components/ui/api-alert";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import toast from 'react-hot-toast';
+import { useParams, useRouter } from 'next/navigation';
+import { AlertModal } from '@/components/modals/alert-modal';
+import { ApiAlert } from '@/components/ui/api-alert';
+import { useOrigin } from '@/hooks/use-origin';
 
 interface SettingsFormProps {
   initialData: Store;
@@ -38,6 +39,7 @@ type SettingsFormValues = z.infer<typeof formSchema>;
 export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
   const params = useParams();
   const router = useRouter();
+  const origin = useOrigin();
 
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -45,7 +47,6 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
   const form = useForm<SettingsFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData,
-    mode: "onBlur",
   });
 
   const onSubmit = async (data: SettingsFormValues) => {
@@ -53,9 +54,9 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
       setLoading(true);
       await axios.patch(`/api/stores/${params.storeId}`, data);
       router.refresh();
-      toast.success("Toko berhasil di-update");
+      toast.success('Toko berhasil di update');
     } catch (error) {
-      toast.error("Cek kembali data yang kamu input");
+      toast.error('Cek kembali data yang diinput');
     } finally {
       setLoading(false);
     }
@@ -66,10 +67,10 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
       setLoading(true);
       await axios.delete(`/api/stores/${params.storeId}`);
       router.refresh();
-      router.push("/");
-      toast.success("Toko sudah berhasil dihapus");
+      router.push('/');
+      toast.success('Toko berhasil dihapus');
     } catch (error) {
-      toast.error("Cek kembali data dan koneksi internet kamu");
+      toast.error('Cek kembali data dan koneksi mu');
     } finally {
       setLoading(false);
       setOpen(false);
@@ -107,7 +108,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Ganti Nama Toko</FormLabel>
+                  <FormLabel>Name</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="Nama Toko"
@@ -121,7 +122,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
             />
           </div>
           <Button disabled={loading} type="submit">
-            Simpan
+            Save
           </Button>
         </form>
       </Form>
@@ -134,5 +135,3 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
     </>
   );
 };
-
-export default SettingsForm;

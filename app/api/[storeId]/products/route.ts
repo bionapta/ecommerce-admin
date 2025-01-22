@@ -1,13 +1,13 @@
-import db from "@/lib/db";
-import { auth } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
+import db from "@/lib/db";
 
 export async function POST(
   req: Request,
   { params }: { params: { storeId: string } }
 ) {
   try {
-    const { userId } = await auth();
+    const { userId } = auth();
     const body = await req.json();
 
     const { name, price, categoryId, images, isFeatured, isArchived } = body;
@@ -17,23 +17,23 @@ export async function POST(
     }
 
     if (!name) {
-      return new NextResponse("Input Nama Produk", { status: 400 });
+      return new NextResponse("Nama perlu diinput", { status: 400 });
     }
 
     if (!images || !images.length) {
-      return new NextResponse("Perlu Input Gambar Produk", { status: 400 });
+      return new NextResponse("Image perlu diinput", { status: 400 });
     }
 
     if (!price) {
-      return new NextResponse("Input Harga Produk", { status: 400 });
+      return new NextResponse("Harga perlu diinput", { status: 400 });
     }
 
     if (!categoryId) {
-      return new NextResponse("Input Kategori Produk", { status: 400 });
+      return new NextResponse("Kategori perlu diinput", { status: 400 });
     }
 
     if (!params.storeId) {
-      return new NextResponse("Store ID URL dibutuhkan");
+      return new NextResponse("Store id URL dibutuhkan");
     }
 
     const storeByUserId = await db.store.findFirst({
@@ -65,7 +65,7 @@ export async function POST(
 
     return NextResponse.json(product);
   } catch (error) {
-    console.error("[PRODUCTS_POST]", error);
+    console.log("[PRODUCTS_POST]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }
@@ -80,10 +80,10 @@ export async function GET(
     const isFeatured = searchParams.get("isFeatured");
 
     if (!params.storeId) {
-      return new NextResponse("Store ID URL dibutuhkan");
+      return new NextResponse("Store id URL dibutuhkan");
     }
 
-    const product = await db.product.findMany({
+    const products = await db.product.findMany({
       where: {
         storeId: params.storeId,
         categoryId,
@@ -99,9 +99,9 @@ export async function GET(
       },
     });
 
-    return NextResponse.json(product);
+    return NextResponse.json(products);
   } catch (error) {
-    console.error("[PRODUCTS_GET]", error);
+    console.log("[PRODUCTS_GET]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }

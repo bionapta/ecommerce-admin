@@ -21,13 +21,13 @@ import { Button } from "../ui/button";
 import toast from "react-hot-toast";
 
 const formSchema = z.object({
-  name: z.string().min(1).max(50),
+  name: z.string().min(1),
 });
 
 export const StoreModal = () => {
   const [loading, setLoading] = useState(false);
 
-  const StoreModal = useStoreModal();
+  const storeModal = useStoreModal();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -39,13 +39,12 @@ export const StoreModal = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       setLoading(true);
-
       const response = await axios.post("/api/stores", values);
       console.log(response.data);
-      toast.success("Sip! Berhasil membuat toko :D");
-      window.location.assign(`/${response.data.id}`);
+      toast.success("Berhasil membuat toko");
+      window.location.assign(`/${response.data.id}`)
     } catch (error) {
-      toast.error("Duh! Gagal membuat toko :(");
+      toast.error("Gagal Membuat Toko");
     } finally {
       setLoading(false);
     }
@@ -53,10 +52,10 @@ export const StoreModal = () => {
 
   return (
     <Modal
-      title="Buat Store Dulu!"
-      description="Buat store kamu dulu yuk untuk mulai kelola produk dan kategori :)"
-      isOpen={StoreModal.isOpen}
-      onClose={StoreModal.onClose}
+      title="Buat Store"
+      description="Tambahkan Store untuk membuat produk dan kategori"
+      isOpen={storeModal.isOpen}
+      onClose={storeModal.onClose}
     >
       <div>
         <div className="space-y-4 py-2 pb-4">
@@ -67,10 +66,10 @@ export const StoreModal = () => {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Nama Toko</FormLabel>
+                    <FormLabel>Name</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Masukkan nama toko kamu (Contoh: YONStore)"
+                        placeholder="Nama Toko"
                         {...field}
                         disabled={loading}
                       />
@@ -83,12 +82,12 @@ export const StoreModal = () => {
                 <Button
                   disabled={loading}
                   variant="outline"
-                  onClick={StoreModal.onClose}
+                  onClick={storeModal.onClose}
                 >
-                  Batal
+                  Cancel
                 </Button>
                 <Button disabled={loading} type="submit">
-                  Lanjutkan
+                  Continue
                 </Button>
               </div>
             </form>

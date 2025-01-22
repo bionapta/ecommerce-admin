@@ -1,10 +1,10 @@
-import db from "@/lib/db";
-import { auth } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
+import db from "@/lib/db";
 
 export async function POST(req: Request) {
   try {
-    const { userId } = await auth();
+    const { userId } = auth();
     const body = await req.json();
 
     const { name } = body;
@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     }
 
     if (!name) {
-      return new NextResponse("Input Nama Toko", { status: 400 });
+      return new NextResponse("Nama toko perlu diinput", { status: 400 });
     }
 
     const store = await db.store.create({
@@ -26,7 +26,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json(store);
   } catch (error) {
-    console.error("[[STORES_POST]", error);
+    console.log("[STORES_POST]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }

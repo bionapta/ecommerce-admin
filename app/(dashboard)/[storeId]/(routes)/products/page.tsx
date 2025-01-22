@@ -5,7 +5,7 @@ import { ProductColumn } from "./components/columns";
 import { format } from "date-fns";
 import { formatter } from "@/lib/utils";
 
-const ProductPage = async ({ params }: { params: { storeId: string } }) => {
+const ProductsPage = async ({ params }: { params: { storeId: string } }) => {
   const products = await db.product.findMany({
     where: {
       storeId: params.storeId,
@@ -37,4 +37,4 @@ const ProductPage = async ({ params }: { params: { storeId: string } }) => {
   );
 };
 
-export default ProductPage;
+export default ProductsPage;
