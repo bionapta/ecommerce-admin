@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import * as z from "zod";
-import { useState } from "react";
-import axios from "axios";
+import * as z from 'zod';
+import { useState } from 'react';
+import axios from 'axios';
 
-import { Button } from "@/components/ui/button";
-import { Heading } from "@/components/ui/heading";
-import { Separator } from "@/components/ui/separator";
-import { Banner } from "@prisma/client";
-import { Trash } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from '@/components/ui/button';
+import { Heading } from '@/components/ui/heading';
+import { Separator } from '@/components/ui/separator';
+import { Banner } from '@prisma/client';
+import { Trash } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Form,
   FormControl,
@@ -18,13 +18,13 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import toast from "react-hot-toast";
-import { useParams, useRouter } from "next/navigation";
-import { AlertModal } from "@/components/modals/alert-modal";
-import { useOrigin } from "@/hooks/use-origin";
-import ImageUpload from "@/components/ui/image-upload";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import toast from 'react-hot-toast';
+import { useParams, useRouter } from 'next/navigation';
+import { AlertModal } from '@/components/modals/alert-modal';
+import { useOrigin } from '@/hooks/use-origin';
+import ImageUpload from '@/components/ui/image-upload';
 
 interface BannerFormProps {
   initialData: Banner | null;
@@ -45,18 +45,18 @@ export const BannerForm: React.FC<BannerFormProps> = ({ initialData }) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const title = initialData ? "Edit Banner" : "Buat Banner";
-  const description = initialData ? "Edit Banner Toko" : "Buat Banner Toko";
+  const title = initialData ? 'Edit Banner' : 'Buat Banner';
+  const description = initialData ? 'Edit Banner Toko' : 'Buat Banner Toko';
   const toastMessage = initialData
-    ? "Banner berhasil di edit"
-    : "Banner berhasil dibuat";
-  const action = initialData ? "Simpan Banner" : "Buat Banner";
+    ? 'Banner berhasil di edit'
+    : 'Banner berhasil dibuat';
+  const action = initialData ? 'Simpan Banner' : 'Buat Banner';
 
   const form = useForm<BannerFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
-      label: "",
-      imageUrl: "",
+      label: '',
+      imageUrl: '',
     },
   });
 
@@ -75,7 +75,7 @@ export const BannerForm: React.FC<BannerFormProps> = ({ initialData }) => {
       router.push(`/${params.storeId}/banners`);
       toast.success(toastMessage);
     } catch (error) {
-      toast.error("Cek kembali data yang diinput");
+      toast.error('Cek kembali data yang diinput');
     } finally {
       setLoading(false);
     }
@@ -87,9 +87,9 @@ export const BannerForm: React.FC<BannerFormProps> = ({ initialData }) => {
       await axios.delete(`/api/${params.storeId}/banners/${params.bannerId}`);
       router.refresh();
       router.push(`/${params.storeId}/banners`);
-      toast.success("Banner berhasil dihapus");
+      toast.success('Banner berhasil dihapus');
     } catch (error) {
-      toast.error("Cek kembali data dan koneksi mu");
+      toast.error('Cek kembali data dan koneksi mu');
     } finally {
       setLoading(false);
       setOpen(false);
@@ -152,7 +152,7 @@ export const BannerForm: React.FC<BannerFormProps> = ({ initialData }) => {
                     <ImageUpload
                       disabled={loading}
                       onChange={(url) => field.onChange(url)}
-                      onRemove={() => field.onChange("")}
+                      onRemove={() => field.onChange('')}
                       value={field.value ? [field.value] : []}
                     />
                   </FormControl>
