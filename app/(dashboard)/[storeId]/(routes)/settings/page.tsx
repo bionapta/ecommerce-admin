@@ -1,7 +1,7 @@
 import db from "@/lib/db";
-import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { SettingsForm } from "./components/settings-form";
+import { auth } from "@clerk/nextjs/server";
 
 interface SettingsPageProps {
     params: {
@@ -13,7 +13,7 @@ const SettingsPage: React.FC<SettingsPageProps> = async ({
     params
 }) => {
 
-    const { userId } = auth()
+    const { userId } = await auth()
 
     if (!userId) {
         redirect('/sign-in')
