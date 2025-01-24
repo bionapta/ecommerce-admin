@@ -1,28 +1,24 @@
-import db from "@/lib/db";
-import { BannerClient } from "./components/client";
-import { BannerColumn } from "./components/columns";
+import db from '@/lib/db';
+import { BannerClient } from './components/client';
+import { BannerColumn } from './components/columns';
 
-import { format } from 'date-fns'
+import { format } from 'date-fns';
 
-const BannersPage = async ({
-  params
-}: {
-  params: { storeId: string}
-}) => {
+const BannersPage = async ({ params }: { params: { storeId: string } }) => {
   const banners = await db.banner.findMany({
     where: {
-      storeId: params.storeId
+      storeId: params.storeId,
     },
     orderBy: {
-      createdAt: 'desc'
-    }
-  })
+      createdAt: 'desc',
+    },
+  });
 
-  const formattedBanners:BannerColumn[] = banners.map((item) => ({
+  const formattedBanners: BannerColumn[] = banners.map((item) => ({
     id: item.id,
     label: item.label,
-    createdAt: format(item.createdAt, "MMM do, yyyy")
-  }))
+    createdAt: format(item.createdAt, 'MMM do, yyyy'),
+  }));
 
   return (
     <div className="flex-col">
